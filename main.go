@@ -10,7 +10,7 @@ import (
 	"os/signal"
 	"regexp"
 	"strings"
-	"synct/output"
+	"hangout-go/output"
 	"time"
 )
 
@@ -48,11 +48,11 @@ func main() {
 	config.Consumer.Return.Errors = true
 	config.Group.Return.Notifications = true
 	config.Consumer.Offsets.Initial = sarama.OffsetNewest
-	config.Group.Topics.Whitelist = regexp.MustCompile(`shuaige`)
+	config.Group.Topics.Whitelist = regexp.MustCompile(`shuaige.*`)
 	// config.Group.Heartbeat.Interval = 1
 
 	// brokers := []string{"10.97.14.111:9092", "10.97.14.112:9092", "10.97.14.112:9092"}
-	brokers := []string{"10.10.9.107:9092", "10.10.9.108:9092", "10.10.9.109:9092"}
+	brokers := []string{"10.99.1.151:19092", "10.99.1.148:19092", "10.99.1.48:19092"}
 	// topics := []string{"flume-test-.*"}
 
 	consumer, err := cluster.NewConsumer(brokers, "groupid", nil, config)
@@ -60,7 +60,7 @@ func main() {
 		panic(err)
 	}
 	// dbConn := output.NewDBConn("10.97.14.111", "9000", "test")
-	dbConn := output.NewDBConn("10.10.142.142", "9000", "beta")
+	dbConn := output.NewDBConn("10.99.1.151", "9001", "wangdazhuang")
 
 	defer consumer.Close()
 
@@ -83,6 +83,7 @@ func main() {
 		select {
 		case line, ok := <-consumer.Messages():
 			if ok {
+                fmt.Println(string(line.Value))
 				msg, err := GetMsg(line.Value)
 				if err != nil {
                     logFile.WriteString(err.Error() + "|")
