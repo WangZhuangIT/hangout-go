@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -9,15 +10,15 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
+	"github.com/olebedev/config"
 	"github.com/wvanbergen/kafka/consumergroup"
 	"github.com/wvanbergen/kazoo-go"
-	"fmt"
 )
 
 const (
 	DefaultKafkaTopics   = "shuaig*"
 	DefaultConsumerGroup = "net_url"
-    DefaultZookeeper     = "10.99.1.151:12181,10.99.1.148:12181,10.99.1.48:12181"
+	DefaultZookeeper     = "10.99.1.151:12181,10.99.1.148:12181,10.99.1.48:12181"
 )
 
 var (
@@ -31,7 +32,15 @@ func init() {
 	sarama.Logger = log.New(os.Stdout, "[Sarama] ", log.LstdFlags)
 }
 
-func main() {
+func main123123() {
+	cfg, err := config.ParseYamlFile("./conf/conf.yaml")
+	if err != nil {
+		panic(err)
+	}
+	//fmt.Println(host['development']['database']['host'])
+	test, _ := cfg.String("production.database.host")
+	fmt.Println(test)
+
 	flag.Parse()
 
 	if *zookeeper == "" {

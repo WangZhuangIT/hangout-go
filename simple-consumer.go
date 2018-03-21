@@ -10,7 +10,7 @@ var (
 	wg sync.WaitGroup
 )
 
-func main() {
+func mainnn() {
 	consumer, err := sarama.NewConsumer([]string{"10.99.1.151:19092"}, nil)
 
 	if err != nil {
